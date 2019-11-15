@@ -62,10 +62,15 @@ public class InitBean {
 
         while((line = br.readLine()) != null){
             String[] row = line.split(";");
-            //List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
-            //Race race;
-            //race = new Race(Long.valueOf(row[0]), row[1], LocalDate.parse(row[2]));
-         //   this.em.persist(race);
+            List<Race> races = this.em
+                    .createNamedQuery("Race.getById", Race.class)
+                    .setParameter("ID",Long.parseLong(row[0])).getResultList();
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            LocalDate date = LocalDate.parse(row[2], formatter);
+            Race race;
+            race = new Race(Long.parseLong(row[0]), row[1], date);
+            this.em.persist(race);
         }
 
 

@@ -1,0 +1,2 @@
+
+Ich habe die zwei CSV-Files einlesen können und in die Datenbank speichern können.
