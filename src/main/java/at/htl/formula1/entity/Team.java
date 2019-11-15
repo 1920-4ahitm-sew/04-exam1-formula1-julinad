@@ -18,8 +18,9 @@ import javax.persistence.*;
 @Entity
 public class Team {
 
-    @EmbeddedId
+    @Id
     private Long id;
+
     private String name;
 
     //region Constructors

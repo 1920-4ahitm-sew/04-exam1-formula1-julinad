@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 public class Race {
 
-    @EmbeddedId
+    @Id
     private Long id;
 
     private String country;

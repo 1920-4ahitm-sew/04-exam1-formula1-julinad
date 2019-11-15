@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 @ApplicationScoped
@@ -37,7 +38,7 @@ public class InitBean {
     @Inject
     ResultsRestClient client;
 
-
+    @Transactional
     public void init(@Observes @Initialized(ApplicationScoped.class) Object init) throws IOException {
 
         readTeamsAndDriversFromFile(TEAM_FILE_NAME);
@@ -62,10 +63,10 @@ public class InitBean {
 
         while((line = br.readLine()) != null){
             String[] row = line.split(";");
-          //  List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
-          //  Race race;
-           // race = new Race(row[0], row[1], DateTimeFormatter.ISO_LOCAL_DATE.format(row[2]));
-            //this.em.persist(race);
+            List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
+            Race race;
+            race = new Race(Long.parseLong(row[0]), row[1], LocalDate.parse(row[2]));
+            this.em.persist(race);
         }
 
 

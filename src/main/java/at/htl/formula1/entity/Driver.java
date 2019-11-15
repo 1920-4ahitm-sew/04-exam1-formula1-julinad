@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "F1_DRIVER")
 public class Driver {
 
-    @EmbeddedId
+    @Id
     private Long id;
     private String name;
 
