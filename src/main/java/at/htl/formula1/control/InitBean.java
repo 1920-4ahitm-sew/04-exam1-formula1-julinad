@@ -13,20 +13,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Stream;
 
 @ApplicationScoped
 public class InitBean {
 
-    private static final String TEAM_FILE_NAME = "teams.csv";
-    private static final String RACES_FILE_NAME = "races.csv";
+    private static final String TEAM_FILE_NAME = "/teams.csv";
+    private static final String RACES_FILE_NAME = "/races.csv";
 
     @PersistenceContext
     EntityManager em;
@@ -35,7 +38,7 @@ public class InitBean {
     ResultsRestClient client;
 
 
-    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) {
+    public void init(@Observes @Initialized(ApplicationScoped.class) Object init) throws IOException {
 
         readTeamsAndDriversFromFile(TEAM_FILE_NAME);
         readRacesFromFile(RACES_FILE_NAME);
@@ -48,7 +51,22 @@ public class InitBean {
      *
      * @param racesFileName
      */
-    private void readRacesFromFile(String racesFileName) {
+    /*TODO
+    * Problem with new Race and Dateformat and longs, because i get Strings
+     */
+    private void readRacesFromFile(String racesFileName) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(racesFileName)));
+        br.readLine();
+        String line;
+
+
+        while((line = br.readLine()) != null){
+            String[] row = line.split(";");
+          //  List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
+          //  Race race;
+           // race = new Race(row[0], row[1], DateTimeFormatter.ISO_LOCAL_DATE.format(row[2]));
+            //this.em.persist(race);
+        }
 
 
     }
@@ -60,8 +78,16 @@ public class InitBean {
      *
      * @param teamFileName
      */
-    private void readTeamsAndDriversFromFile(String teamFileName) {
+    private void readTeamsAndDriversFromFile(String teamFileName) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(teamFileName)));
+        br.readLine();
+        String line;
 
+        while((line = br.readLine()) != null){
+            String[] row = line.split(";");
+            persistTeamAndDrivers(row);
+
+        }
     }
 
     /**
@@ -76,7 +102,16 @@ public class InitBean {
      */
 
     private void persistTeamAndDrivers(String[] line) {
-
+        List<Team> teams = this.em.createNamedQuery("Team.getByName", Team.class).setParameter("NAME",line[0]).getResultList();
+        Team team;
+        if (teams.size() != 1){
+            team = new Team(line[0]);
+            this.em.persist(team);
+        }else{
+            team = teams.get(1);
+        }
+        this.em.persist(new Driver(line[1], team));
+        this.em.persist(new Driver(line[2], team));
     }
 
 

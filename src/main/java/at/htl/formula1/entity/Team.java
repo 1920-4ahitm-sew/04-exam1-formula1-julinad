@@ -7,8 +7,18 @@ import javax.persistence.*;
  * <p>
  * The id's are assigned by the database.
  */
+
+@NamedQueries({
+        @NamedQuery(
+                name = "Team.getByName",
+                query = "SELECT t FROM Team t WHERE t.name = :NAME"
+        )
+})
+@Table(name = "F1_TEAM")
+@Entity
 public class Team {
 
+    @EmbeddedId
     private Long id;
     private String name;
 
