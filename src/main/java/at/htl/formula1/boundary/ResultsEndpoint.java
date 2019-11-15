@@ -32,11 +32,17 @@ public class ResultsEndpoint {
      * @param id des Rennens
      * @return
      */
+    /*
+    TODO
+    does not work
+     */
     @GET @Path("{id}") @Produces(MediaType.APPLICATION_JSON)
     public Response findWinnerOfRace(@PathParam("id") long id) {
         //return em.find(Result.class, id);
         return null;
     }
+
+
 
 
 }

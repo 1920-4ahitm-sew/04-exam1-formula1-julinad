@@ -53,20 +53,19 @@ public class InitBean {
      * @param racesFileName
      */
     /*TODO
-    * Problem with new Race and Dateformat and longs, because i get Strings
+    * Problem with new Race and row[0] with Long
      */
     private void readRacesFromFile(String racesFileName) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(racesFileName)));
         br.readLine();
         String line;
 
-
         while((line = br.readLine()) != null){
             String[] row = line.split(";");
-            List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
-            Race race;
-            race = new Race(Long.parseLong(row[0]), row[1], LocalDate.parse(row[2]));
-            this.em.persist(race);
+            //List<Race> races = this.em.createNamedQuery("Race.getById", Race.class).setParameter("ID",row[0]).getResultList();
+            //Race race;
+            //race = new Race(Long.valueOf(row[0]), row[1], LocalDate.parse(row[2]));
+         //   this.em.persist(race);
         }
 
 
