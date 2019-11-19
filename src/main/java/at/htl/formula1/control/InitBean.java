@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -56,7 +57,7 @@ public class InitBean {
     * Problem with new Race and row[0] with Long
      */
     private void readRacesFromFile(String racesFileName) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(racesFileName)));
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(racesFileName), "UTF-8"));
         br.readLine();
         String line;
 
@@ -84,7 +85,7 @@ public class InitBean {
      * @param teamFileName
      */
     private void readTeamsAndDriversFromFile(String teamFileName) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(teamFileName)));
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(teamFileName), "UTF-8"));
         br.readLine();
         String line;
 
