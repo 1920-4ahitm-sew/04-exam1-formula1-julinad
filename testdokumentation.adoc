@@ -1,0 +1,30 @@
+## Testdokumentation
+
+### Aufgabe 1: CSVs einlesen
+
+#### Fehler beim Encoding
+
+Fehlerhafter Code:
+[source, java]
+----
+ BufferedReader br = new BufferedReader(
+         new InputStreamReader(getClass()
+         .getResourceAsStream(racesFileName))
+         );
+----
+
+Da ich beim InputStreamReader kein UTF-8 Encoding angegeben habe, gab es in der Tabelle ein Problem mit dem Fahrer Räikkönen.
+In der Tabelle sah es so aus: ``Kimi RÃ¤ikkÃ¶nen``
+
+verbesserter Code:
+[source, java]
+----
+ BufferedReader br = new BufferedReader(
+         new InputStreamReader(getClass()
+         .getResourceAsStream(racesFileName), "UTF-8")
+         );
+----
+
+Beim InputStreamReader kann man nach der Ressource ein Encoding angeben. Dies hat den Fehler behoben.
+
+In der Methode ``readTeamsAndDriversFromFile()`` wurde auch das Encoding vergessen und analog wie das obige Beispiel korregiert.
