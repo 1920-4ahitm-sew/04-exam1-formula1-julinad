@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-
+@Path("results")
 public class ResultsEndpoint {
 
     @PersistenceContext
@@ -42,18 +42,17 @@ public class ResultsEndpoint {
                 .build();
     }
 
-    /**
-     * @param id des Rennens
-     * @return
-     */
-    /*
-    TODO
-    does not work
-     */
-    @GET @Path("{id}") @Produces(MediaType.APPLICATION_JSON)
-    public Response findWinnerOfRace(@PathParam("id") long id) {
-        //return em.find(Result.class, id);
-        return null;
+
+    @GET @Path("winner/{country}") @Produces(MediaType.APPLICATION_JSON)
+    public Response findWinnerOfRace(@PathParam("country") String country) {
+        Driver driver;
+
+        driver = em.createNamedQuery("Result.countryOfDriver", Driver.class)
+                .setParameter("COUNTRY", country)
+                .getSingleResult();
+
+        return Response.ok().build();
+
     }
 
 
