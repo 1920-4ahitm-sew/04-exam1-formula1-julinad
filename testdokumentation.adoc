@@ -27,4 +27,81 @@ verbesserter Code:
 
 Beim InputStreamReader kann man nach der Ressource ein Encoding angeben. Dies hat den Fehler behoben.
 
-In der Methode ``readTeamsAndDriversFromFile()`` wurde auch das Encoding vergessen und analog wie das obige Beispiel korregiert.
+In der Methode ``readTeamsAndDriversFromFile()`` wurde auch das Encoding vergessen und analog wie das obige Beispiel korrigiert.
+
+### Aufgabe 2: Import REST
+
+ Einlesen der Daten vom REST-Client:
+
+fehlerhafter Code - ``readResultsFromEndpoint()``:
+[source, java]
+----
+public void readResultsFromEndpoint() {
+     Response response = this.target
+                         .request(MediaType.APPLICATION_JSON)
+                         .get();
+     JsonArray payload = response.readEntity(JsonArray.class);
+
+     persistResult(payload);
+     }
+----
+Code konnte nicht funktionieren, da client & target nie initialisiert wurden.
+
+verbesserter Code:
+[source, java]
+----
+    public void readResultsFromEndpoint() {
+
+        this.client = ClientBuilder.newClient();
+        this.target = client.target(RESULTS_ENDPOINT);
+
+        Response response = this.target
+                            .request(MediaType.APPLICATION_JSON)
+                            .get();
+        JsonArray payload = response.readEntity(JsonArray.class);
+
+        persistResult(payload);
+    }
+----
+
+Fehlerhafter Code - ``persistResult()``:
+[source, java]
+----
+@Transactional
+    void persistResult(JsonArray resultsJson) {
+        for (JsonValue jsonValue : resultsJson){
+            Result result = new Result();
+            result.setDriver(resultsJson.getJsonObject(0).getString("driverFullName")); // <1>
+            result.setPosition(resultsJson.getJsonObject(0).getInt("position")); // <2>
+            result.setRace(resultsJson.getJsonObject().getInt("raceNo")); // <3>
+
+            em.merge(result);
+        }
+    }
+----
+<1> SetDriver cannot be applied to java.lang.String (Hätte überall Vettel eingetragen, da der Name vom 0. JSON objekt Vettel ist)
+<2> Hätte funktioniert, hätte aber jeden die Position 1 gegeben, da ich immer nur die Position vom 0. JSON Objekt
+        eingetragen hätte
+<3> SetRace cannot be applied to int
+
+Für SetDriver brauche ich ein Driver Objekt, bekomme aber einen String.
+Für SetRace brauche ich ein Race Objekt, bekomme aber einen int.
+
+Verbesserter Code:
+[source, java]
+----
+    @Transactional
+    void persistResult(JsonArray resultsJson) {
+        for (JsonValue jsonValue : resultsJson){
+            JsonObject resultJson = jsonValue.asJsonObject();
+            Result result = new Result();
+            result.setDriver(em.createNamedQuery("Driver.findByName", Driver.class)
+                                        .setParameter("NAME", resultJson.getString("driverFullName")).getSingleResult());
+            result.setPosition(resultJson.getInt("position"));
+            result.setRace(em.createNamedQuery("Race.getById", Race.class)
+                                    .setParameter("ID", Long.valueOf(resultJson.getInt("raceNo"))).getSingleResult());
+            em.merge(result);
+        }
+    }
+----
+
