@@ -105,3 +105,41 @@ Verbesserter Code:
     }
 ----
 
+### Aufgabe 3: Gesamtpunkte eines Fahrers
+
+Fehler 1: Java-Klasse RestConfig fehlte komplett.
+
+verbesserter Code:
+
+[source, java]
+----
+@ApplicationPath("api")
+public class RestConfig extends Application {
+}
+----
+
+Fehler 2: getPointsSumOfDriver() wurde nicht gemacht
+
+verbesserter Code:
+
+[source, java]
+----
+@GET @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject getPointsSumOfDriver(@QueryParam("name") String name) {
+        Long points;
+        Driver driver;
+
+        points = em.createNamedQuery("Result.pointSumDriver", Long.class)
+                .setParameter("NAME", name)
+                .getSingleResult();
+
+        driver = em.createNamedQuery("Driver.findByName", Driver.class)
+                .setParameter("NAME", name)
+                .getSingleResult();
+
+        return Json.createObjectBuilder()
+                .add("driver", name)
+                .add("points", points)
+                .build();
+    }
+----
