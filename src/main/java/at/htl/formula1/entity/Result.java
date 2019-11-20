@@ -13,6 +13,10 @@ import javax.persistence.*;
         @NamedQuery(
                 name = "Result.pointSumDriver",
                 query = "select sum(r.points) from Result r where r.driver.name = :NAME"
+        ),
+        @NamedQuery(
+                name = "Result.countryOfDriver",
+                query = "select r.driver from Result r where r.position = 1 and r.race.country = :COUNTRY"
         )
 })
 public class Result {
