@@ -1,6 +1,7 @@
 package at.htl.formula1.boundary;
 
 import at.htl.formula1.entity.Driver;
+import at.htl.formula1.entity.Race;
 import at.htl.formula1.entity.Result;
 
 import javax.json.Json;
@@ -26,13 +27,12 @@ public class ResultsEndpoint {
     @GET @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getPointsSumOfDriver(@QueryParam("name") String name) {
         Long points;
-        Driver driver;
 
         points = em.createNamedQuery("Result.pointSumDriver", Long.class)
                 .setParameter("NAME", name)
                 .getSingleResult();
 
-        driver = em.createNamedQuery("Driver.findByName", Driver.class)
+        Driver driver = em.createNamedQuery("Driver.findByName", Driver.class)
                 .setParameter("NAME", name)
                 .getSingleResult();
 
@@ -45,14 +45,22 @@ public class ResultsEndpoint {
 
     @GET @Path("winner/{country}") @Produces(MediaType.APPLICATION_JSON)
     public Response findWinnerOfRace(@PathParam("country") String country) {
-        Driver driver;
 
-        driver = em.createNamedQuery("Result.countryOfDriver", Driver.class)
+        Driver driver = em.createNamedQuery("Result.countryOfDriver", Driver.class)
                 .setParameter("COUNTRY", country)
                 .getSingleResult();
 
         return Response.ok().build();
 
+    }
+
+    @GET @Path("raceswon") @Produces(MediaType.APPLICATION_JSON)
+    public Response getWonRacesByTeam(@QueryParam("team") String team){
+
+        List<Race> racesWon = em.createNamedQuery("Result.wonRacesTeam", Race.class)
+                .setParameter("TEAM", team)
+                .getResultList();
+        return Response.ok().build();
     }
 
 
