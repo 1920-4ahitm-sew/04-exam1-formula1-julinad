@@ -33,14 +33,14 @@ public class ResultsRestClient {
      * Vom RestEndpoint werden alle Result abgeholt und in ein JsonArray gespeichert.
      * Dieses JsonArray wird an die Methode persistResult(...) übergeben
      */
-    /* TODO
-    does not work
-     */
     public void readResultsFromEndpoint() {
-    /* Response response = this.target.request(MediaType.APPLICATION_JSON).get();
+        this.client = ClientBuilder.newClient();
+        this.target = client.target(RESULTS_ENDPOINT);
+
+     Response response = this.target.request(MediaType.APPLICATION_JSON).get();
         JsonArray payload = response.readEntity(JsonArray.class);
 
-        persistResult(payload); */
+        persistResult(payload);
     }
 
     /**
@@ -62,18 +62,17 @@ public class ResultsRestClient {
      *
      * @param resultsJson
      */
-    /*TODO
-    * does not work
-     */
     @Transactional
     void persistResult(JsonArray resultsJson) {
         for (JsonValue jsonValue : resultsJson){
+            JsonObject resultJson = jsonValue.asJsonObject();
             Result result = new Result();
-          //  result.setDriver(resultsJson.getJsonObject(0).getString("driverFullName"));
-          //  result.setPosition(resultsJson.getJsonObject(1).getInt("position"));
-         //   result.setRace(resultsJson.getJsonObject().getInt("raceNo"));
-
-         //   em.merge(result);
+            result.setDriver(em.createNamedQuery("Driver.findByName", Driver.class)
+                                        .setParameter("NAME", resultJson.getString("driverFullName")).getSingleResult());
+            result.setPosition(resultJson.getInt("position"));
+            result.setRace(em.createNamedQuery("Race.getById", Race.class)
+                                    .setParameter("ID", Long.valueOf(resultJson.getInt("raceNo"))).getSingleResult());
+            em.merge(result);
         }
     }
 }
