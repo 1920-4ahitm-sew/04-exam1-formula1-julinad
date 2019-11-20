@@ -23,9 +23,23 @@ public class ResultsEndpoint {
      * @param name als QueryParam einzulesen
      * @return JsonObject
      */
-    @GET @Path("name") @Produces(MediaType.APPLICATION_JSON)
+    @GET @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getPointsSumOfDriver(@QueryParam("name") String name) {
-        return null;
+        Long points;
+        Driver driver;
+
+        points = em.createNamedQuery("Result.pointSumDriver", Long.class)
+                .setParameter("NAME", name)
+                .getSingleResult();
+
+        driver = em.createNamedQuery("Driver.findByName", Driver.class)
+                .setParameter("NAME", name)
+                .getSingleResult();
+
+        return Json.createObjectBuilder()
+                .add("driver", name)
+                .add("points", points)
+                .build();
     }
 
     /**
