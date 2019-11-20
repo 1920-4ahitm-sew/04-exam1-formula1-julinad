@@ -143,3 +143,22 @@ verbesserter Code:
                 .build();
     }
 ----
+
+### Aufgabe 4: Sieger eines bestimmten rennens
+
+Fehler: wurde nicht gemacht
+
+Verbesserter Code:
+[source, java]
+----
+    @GET @Path("winner/{country}") @Produces(MediaType.APPLICATION_JSON)
+    public Response findWinnerOfRace(@PathParam("country") String country) {
+
+        Driver driver = em.createNamedQuery("Result.countryOfDriver", Driver.class)
+                .setParameter("COUNTRY", country)
+                .getSingleResult();
+
+        return Response.ok().build();
+
+    }
+----
