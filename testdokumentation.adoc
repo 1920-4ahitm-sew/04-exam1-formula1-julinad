@@ -162,3 +162,20 @@ Verbesserter Code:
 
     }
 ----
+
+### Aufgabe 5: Liste der Rennen, die ein Team gewonnen hat
+
+Fehler: wurde nicht gemacht
+
+Verbesseter Code:
+[source, java]
+----
+    @GET @Path("raceswon") @Produces(MediaType.APPLICATION_JSON)
+    public Response getWonRacesByTeam(@QueryParam("team") String team){
+
+        List<Race> racesWon = em.createNamedQuery("Result.wonRacesTeam", Race.class)
+                .setParameter("TEAM", team)
+                .getResultList();
+        return Response.ok().build();
+    }
+----
