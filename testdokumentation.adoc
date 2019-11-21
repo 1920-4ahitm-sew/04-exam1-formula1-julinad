@@ -15,7 +15,7 @@ Fehlerhafter Code:
 Da ich beim InputStreamReader kein UTF-8 Encoding angegeben habe, gab es in der Tabelle ein Problem mit dem Fahrer Räikkönen.
 In der Tabelle sah es so aus: ``Kimi RÃ¤ikkÃ¶nen``
 
-verbesserter Code:
+Verbesserter Code:
 [source, java]
 ----
  BufferedReader br = new BufferedReader(
@@ -32,7 +32,7 @@ In der Methode ``readTeamsAndDriversFromFile()`` wurde auch das Encoding vergess
 
 Einlesen der Daten vom REST-Client:
 
-fehlerhafter Code - ``readResultsFromEndpoint()``:
+Fehlerhafter Code - ``readResultsFromEndpoint()``:
 [source, java]
 ----
 public void readResultsFromEndpoint() {
@@ -78,10 +78,10 @@ Fehlerhafter Code - ``persistResult()``:
         }
     }
 ----
-<1> SetDriver cannot be applied to java.lang.String (Hätte überall Vettel eingetragen, da der Name vom 0. JSON Objekt Vettel ist)
+<1> ``SetDriver cannot be applied to java.lang.String`` (Hätte überall Vettel eingetragen, da der Name vom 0. JSON Objekt Vettel ist)
 <2> Hätte funktioniert, hätte aber jeden die Position 1 gegeben, da ich immer nur die Position vom 0. JSON Objekt
         eingetragen hätte
-<3> SetRace cannot be applied to int
+<3> ``SetRace cannot be applied to int``
 
 Für SetDriver brauche ich ein Driver Objekt, bekomme aber einen String.
 Für SetRace brauche ich ein Race Objekt, bekomme aber einen int.
@@ -108,7 +108,7 @@ Verbesserter Code:
 
 Fehler 1: Java-Klasse RestConfig fehlte komplett.
 
-verbesserter Code:
+Verbesserter Code:
 [source, java]
 ----
 @ApplicationPath("api")
