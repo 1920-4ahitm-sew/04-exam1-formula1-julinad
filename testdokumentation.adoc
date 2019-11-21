@@ -31,7 +31,7 @@ In der Methode ``readTeamsAndDriversFromFile()`` wurde auch das Encoding vergess
 
 ### Aufgabe 2: Import REST
 
- Einlesen der Daten vom REST-Client:
+Einlesen der Daten vom REST-Client:
 
 fehlerhafter Code - ``readResultsFromEndpoint()``:
 [source, java]
@@ -79,7 +79,7 @@ Fehlerhafter Code - ``persistResult()``:
         }
     }
 ----
-<1> SetDriver cannot be applied to java.lang.String (Hätte überall Vettel eingetragen, da der Name vom 0. JSON objekt Vettel ist)
+<1> SetDriver cannot be applied to java.lang.String (Hätte überall Vettel eingetragen, da der Name vom 0. JSON Objekt Vettel ist)
 <2> Hätte funktioniert, hätte aber jeden die Position 1 gegeben, da ich immer nur die Position vom 0. JSON Objekt
         eingetragen hätte
 <3> SetRace cannot be applied to int
@@ -110,7 +110,6 @@ Verbesserter Code:
 Fehler 1: Java-Klasse RestConfig fehlte komplett.
 
 verbesserter Code:
-
 [source, java]
 ----
 @ApplicationPath("api")
@@ -118,10 +117,9 @@ public class RestConfig extends Application {
 }
 ----
 
-Fehler 2: getPointsSumOfDriver() wurde nicht gemacht
+Fehler 2: ``getPointsSumOfDriver()`` wurde nicht gemacht
 
 verbesserter Code:
-
 [source, java]
 ----
 @GET @Produces(MediaType.APPLICATION_JSON)
@@ -144,7 +142,7 @@ verbesserter Code:
     }
 ----
 
-### Aufgabe 4: Sieger eines bestimmten rennens
+### Aufgabe 4: Sieger eines bestimmten Rennens
 
 Fehler: wurde nicht gemacht
 
