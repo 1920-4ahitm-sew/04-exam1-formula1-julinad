@@ -50,7 +50,7 @@ public class ResultsEndpoint {
                 .setParameter("COUNTRY", country)
                 .getSingleResult();
 
-        return Response.ok().build();
+        return Response.ok(driver).build();
 
     }
 
@@ -60,7 +60,13 @@ public class ResultsEndpoint {
         List<Race> racesWon = em.createNamedQuery("Result.wonRacesTeam", Race.class)
                 .setParameter("TEAM", team)
                 .getResultList();
-        return Response.ok().build();
+        return Response.ok(racesWon).build();
+    }
+
+    @GET @Path("all") @Produces(MediaType.APPLICATION_JSON)
+    public Response getSumPointsOfAll(){
+        List<Object[]> sumPointsDriver = em.createNamedQuery("Result.pointSumAllDriver", Object[].class).getResultList();
+        return Response.ok(sumPointsDriver).build();
     }
 
 
