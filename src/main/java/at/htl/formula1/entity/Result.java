@@ -21,6 +21,10 @@ import javax.persistence.*;
         @NamedQuery(
                 name = "Result.wonRacesTeam",
                 query = "select r.race from Result r where r.position = 1 and r.driver.team.name = :TEAM"
+        ),
+        @NamedQuery(
+                name = "Result.pointSumAllDriver",
+                query = "select r.driver.name, sum(r.points) from Result r group by r.driver.name"
         )
 })
 public class Result {
