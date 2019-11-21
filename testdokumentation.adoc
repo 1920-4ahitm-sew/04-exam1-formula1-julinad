@@ -156,7 +156,7 @@ Verbesserter Code:
                 .setParameter("COUNTRY", country)
                 .getSingleResult();
 
-        return Response.ok().build();
+        return Response.ok(driver).build();
 
     }
 ----
@@ -174,7 +174,7 @@ Verbesseter Code:
         List<Race> racesWon = em.createNamedQuery("Result.wonRacesTeam", Race.class)
                 .setParameter("TEAM", team)
                 .getResultList();
-        return Response.ok().build();
+        return Response.ok(racesWon).build();
     }
 ----
 
