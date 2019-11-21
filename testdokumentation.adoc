@@ -179,3 +179,18 @@ Verbesseter Code:
         return Response.ok().build();
     }
 ----
+
+### Aufgabe 6: Liste aller Fahrer mit ihren Punkten
+
+Fehler: wurde nicht gemacht
+
+Verbesseter Code:
+[source, java]
+----
+    @GET @Path("all") @Produces(MediaType.APPLICATION_JSON)
+    public Response getSumPointsOfAll(){
+        List<Object[]> sumPointsDriver = em.createNamedQuery("Result.pointSumAll", Object[].class).getResultList();
+        return Response.ok(sumPointsDriver).build();
+    }
+----
+
