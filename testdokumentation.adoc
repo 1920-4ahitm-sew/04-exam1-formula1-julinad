@@ -9,8 +9,7 @@ Fehlerhafter Code:
 ----
  BufferedReader br = new BufferedReader(
          new InputStreamReader(getClass()
-         .getResourceAsStream(racesFileName))
-         );
+         .getResourceAsStream(racesFileName)));
 ----
 
 Da ich beim InputStreamReader kein UTF-8 Encoding angegeben habe, gab es in der Tabelle ein Problem mit dem Fahrer Räikkönen.
@@ -47,7 +46,7 @@ public void readResultsFromEndpoint() {
 ----
 Code konnte nicht funktionieren, da client & target nie initialisiert wurden.
 
-verbesserter Code:
+Verbesserter Code:
 [source, java]
 ----
     public void readResultsFromEndpoint() {
@@ -119,7 +118,7 @@ public class RestConfig extends Application {
 
 Fehler 2: ``getPointsSumOfDriver()`` wurde nicht gemacht
 
-verbesserter Code:
+Verbesserter Code:
 [source, java]
 ----
 @GET @Produces(MediaType.APPLICATION_JSON)
